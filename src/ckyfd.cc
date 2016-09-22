@@ -67,17 +67,18 @@ int run_decoder(void* decoder, char* in, char* out, int out_size)
 	}
 	*/
 
-	int ret = dec->decode(input, std::cout);
+	std::ostringstream output;
+	int ret = dec->decode(input, output);
+	if( !ret ) return _CKYFD_FAILURE;
 
-	/*
-	// ostream -> char*
+	// ostringstream to char*
 	std::string str =  output.str();
 	const char* chr = str.c_str();
 	int limit = out_size;
+	*out = '\0';
 	strlcat(out, chr, &limit);
+	if( limit == 0 ) return _CKYFD_BUFOVER;
 
-	return ret;
-	*/
-	return 1;
+	return _CKYFD_SUCCESS;
 }
 

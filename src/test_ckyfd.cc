@@ -17,6 +17,7 @@ int main(int argc, char** argv)
 	void* config;
 	void* decoder;
 	struct timeval t1,t2;
+	int ret;
 
 	if(argc == 1) {
 		fprintf(stderr, "Usage : %s config.xml\n", argv[0]);
@@ -52,13 +53,23 @@ int main(int argc, char** argv)
 		if(string[0] == '\0')
 			continue;
 
-		run_decoder(decoder, string, buf, buf_size);
-		fprintf(stdout, "%s\n", buf);
+		ret = run_decoder(decoder, string, buf, buf_size);
+		switch( ret ) {
+			case _CKYFD_SUCCESS :
+				fprintf(stdout, "%s\n", buf);
+				break;
+			case _CKYFD_FAILURE :
+				break;
+			case _CKYFD_BUFOVER :
+				break;
+			default :
+				break;
+		}
 		
+		cnt_line++;
 		if( cnt_line % 1000 == 0 ) {
 			fprintf(stderr,"cnt_line = %d\n", cnt_line);
 		}
-		cnt_line++;
 	}
 
 	gettimeofday(&t2, NULL);
