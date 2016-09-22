@@ -20,5 +20,5 @@ bin_PROGRAMS = test_ckyfd
 
 test_ckyfd_SOURCES    = test_ckyfd.cc
 test_ckyfd_LDFLAGS    = -static -avoid-version -no-undefined
-test_ckyfd_LDADD      = -lckyfd -lkyfd -lpthread -ldl -L${kyfd_lib}
+test_ckyfd_LDADD      = -lckyfd -lkyfd -L${kyfd_lib}
 test_ckyfd_CFLAGS     = -g -Wall ${OPTS}

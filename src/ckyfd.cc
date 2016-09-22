@@ -26,8 +26,11 @@ void* create_decoder(int argc, char** argv, void** config)
 
 void destroy_decoder(void* decoder, void* config)
 {
-	if( decoder ) delete decoder;
-	if( config )  delete config;
+	Decoder* dec = static_cast<Decoder*>(decoder);
+	DecoderConfig* conf = static_cast<DecoderConfig*>(config);
+
+	if( dec ) delete dec;
+	if( conf )  delete conf;
 }
 
 static char *strlcat(char *dst, const char *src, int *limit)
@@ -51,19 +54,22 @@ static char *strlcat(char *dst, const char *src, int *limit)
 
 int run_decoder(void* decoder, char* in, char* out, int out_size)
 {
+	Decoder* dec = static_cast<Decoder*>(decoder);
+
 	// char* -> istream
 	membuf sbuf(in, in + strlen(in));
 	std::istream input(&sbuf);
 
+	/*
 	std::string line;
 	while (std::getline(input, line)) {
 		std::cout << "line: " << line << "\n";
 	}
+	*/
+
+	int ret = dec->decode(input, std::cout);
 
 	/*
-	std::ostream output;
-	int ret = (Decoder*)decoder->decode(input, output);
-
 	// ostream -> char*
 	std::string str =  output.str();
 	const char* chr = str.c_str();
