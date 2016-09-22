@@ -5,7 +5,7 @@ ckyfd_lib   = ${ckyfd_home}/src
 
 python_inc = ${pythoninc}
 
-INCLUDES  = -I${ckyfd_inc} -I${python_inc}
+AM_CFLAGS  = -I${ckyfd_inc} -I${python_inc}
 
 lib_LTLIBRARIES = libpckyfd.la
 

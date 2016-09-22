@@ -2,7 +2,7 @@
 
 if PYTHON_USE
 SUBDIRS = include src wrapper/python
-DIST_SUBDIRS = include src etc wrapper/python
+DIST_SUBDIRS = include src wrapper/python
 else
 SUBDIRS = include src
 DIST_SUBDIRS = include src

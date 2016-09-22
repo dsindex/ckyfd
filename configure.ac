@@ -4,7 +4,7 @@
 AC_INIT([ckyfd],[0.0.1],[hazzling@gmail.com],[ckyfd])
 PACKAGE=ckyfd
 
-AC_PREREQ(2.64)
+AC_PREREQ(2.50)
 
 AC_CONFIG_AUX_DIR([build])
 
@@ -34,6 +34,23 @@ AC_ARG_ENABLE(gprof,
     esac],[gprof=false])
 AM_CONDITIONAL(GPROF,test x"$gprof" = xtrue)
 
+AC_ARG_WITH(kyfd,
+	AC_HELP_STRING(
+		[--with-kyfd=DIRECTORY],
+		[set kyfd directory path]),
+	[kyfd="$withval"],
+	[path=/home/kyfd/install
+     if test -f ${path}/include/decoder.h ; then
+        dac_path=${path}
+     else
+	    AC_MSG_ERROR(Cannot locate kyfd include header. You should either use --with-kyfd option or install kyfd in ${path})
+     fi
+     kyfd=${kyfd_path}
+	]
+)
+AC_MSG_RESULT(found kyfd in $kyfd.);
+AC_SUBST(kyfd)
+
 AC_ARG_ENABLE(python,
    [  --enable-python=val make python wrapper library, val=yes or no],
    [case "${enableval}" in
@@ -49,7 +66,7 @@ AC_ARG_WITH(pythoninc,
         [--with-pythoninc=DIRECTORY],
         [set python include directory path]),
     [pythoninc="$withval"],
-    [path=/usr/local/include/python2.7
+    [path=/usr/include/python2.7
      if test -f ${path}/Python.h ; then
         python_header=${path}
      else
@@ -79,6 +96,7 @@ AC_DEFINE(CKYFD_HOME,`pwd`)
 
 dnl ---------------------------------------------------------------------------
 dnl Checks for programs
+AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL

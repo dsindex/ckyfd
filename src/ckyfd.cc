@@ -1,9 +1,9 @@
-#include <kyfd/decoder.h>
-#include <kyfd/decoder-config.h>
 #include <istream>
 #include <ostream>
 #include <streambuf>
 #include <string>
+#include "decoder.h"
+#include "decoder-config.h"
 #include "ckyfd.h"
 
 using namespace kyfd;
