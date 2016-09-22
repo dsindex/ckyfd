@@ -18,10 +18,10 @@ int main(int argc, char** argv)
 	void* decoder;
 	struct timeval t1,t2;
 
-    if(argc == 1) {
+	if(argc == 1) {
 		fprintf(stderr, "Usage : %s config.xml\n", argv[0]);
 		return 1;
-    }
+	}
 
 	fprintf(stderr, "--------------------------\n");
 	fprintf(stderr, "-- Started Kyfd Decoder --\n");
