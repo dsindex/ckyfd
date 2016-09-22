@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# buildconf: Build the autoconfiguration files.
+
+set -x
+trap 'rm -f aclocal.m4 ; exit 0' 1 2 3 13 15
+
+aclocal -I build
+
+libtoolize --automake --force --copy
+
+autoheader
+automake --add-missing --copy --no-force --include-deps
+autoconf
+
+exit 0
+

@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+#-*- coding: utf8 -*-
+
+import os
+from optparse import OptionParser
+
+# global variable
+VERBOSE = 0
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+sys.path.append('@prefix@/lib')
+import libpkyfd as pkyfd
+
+if __name__ == '__main__':
+
+	parser = OptionParser()
+	parser.add_option("--verbose", action="store_const", const=1, dest="verbose", help="verbose mode")
+	parser.add_option("-c", "--config", dest="config_path", help="config path", metavar="config_path")
+	(options, args) = parser.parse_args()
+
+	config_path = options.config_path
+	if config_path == None :
+		parser.print_help()
+		exit(1)
+
+	kyfd = pkyfd.Index()
+	kyfd.init(config_path)
+
+	while 1:
+		try:
+			line = sys.stdin.readline()
+		except KeyboardInterrupt:
+			break
+		if not line:
+			break
+		line = line.strip()
+		print line
