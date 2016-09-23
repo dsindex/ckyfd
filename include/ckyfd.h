@@ -5,11 +5,11 @@
 extern "C" {
 #endif
 
-void* create_decoder(int argc, char** argv, void** config);
+void* create_decoder(char* config_file, void** config);
 
 void  destroy_decoder(void* decoder, void* config);
 
-int   run_decoder(void* decoder, char* in, char* out, int out_size);
+int   run_decoder(void* decoder, char* in, char* out, int out_size, void* config, char* nbest, char* oformat);
 
 typedef enum {
 	_CKYFD_FAILURE = 0,

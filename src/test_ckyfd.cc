@@ -18,6 +18,8 @@ int main(int argc, char** argv)
 	void* decoder;
 	struct timeval t1,t2;
 	int ret;
+	char* nbest = "1";
+	char* oformat = "text"; // text | score | component
 
 	if(argc == 1) {
 		fprintf(stderr, "Usage : %s config.xml\n", argv[0]);
@@ -32,7 +34,7 @@ int main(int argc, char** argv)
 	gettimeofday(&t1, NULL);
 
 	// load the configuration and initialize the decoder
-	decoder = create_decoder(argc, argv, &config);
+	decoder = create_decoder(argv[1], &config);
     
 	fprintf(stderr, "Loaded configuration, initializing decoder...\n");
 
@@ -53,7 +55,7 @@ int main(int argc, char** argv)
 		if(string[0] == '\0')
 			continue;
 
-		ret = run_decoder(decoder, string, buf, buf_size);
+		ret = run_decoder(decoder, string, buf, buf_size, config, nbest, oformat);
 		switch( ret ) {
 			case _CKYFD_SUCCESS :
 				fprintf(stdout, "%s\n", buf);

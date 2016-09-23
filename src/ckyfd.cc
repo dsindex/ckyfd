@@ -15,13 +15,13 @@ struct membuf : std::streambuf
 	}
 };
 
-void* create_decoder(int argc, char** argv, void** config)
+void* create_decoder(char* config_file, void** config)
 {
     DecoderConfig* conf = new DecoderConfig;
-	conf->parseCommandLine(argc, argv);
-    Decoder* decoder = new Decoder(*conf);
+	conf->parseConfigFile(config_file);
+    Decoder* dec = new Decoder(*conf);
 	*config = conf;
-	return decoder;
+	return dec;
 }
 
 void destroy_decoder(void* decoder, void* config)
@@ -52,21 +52,20 @@ static char *strlcat(char *dst, const char *src, int *limit)
 	return p;
 }
 
-int run_decoder(void* decoder, char* in, char* out, int out_size)
+int run_decoder(void* decoder, char* in, char* out, int out_size, void* config, char* nbest, char* oformat)
 {
 	Decoder* dec = static_cast<Decoder*>(decoder);
+	DecoderConfig* conf = static_cast<DecoderConfig*>(config);
+
+	// set options
+	if( nbest != NULL and *nbest != '\0' )     conf->handleArgument("nbest", nbest);
+	if( oformat != NULL and *oformat != '\0' ) conf->handleArgument("output", oformat);
 
 	// char* -> istream
 	membuf sbuf(in, in + strlen(in));
 	std::istream input(&sbuf);
 
-	/*
-	std::string line;
-	while (std::getline(input, line)) {
-		std::cout << "line: " << line << "\n";
-	}
-	*/
-
+	// decoding
 	std::ostringstream output;
 	int ret = dec->decode(input, output);
 	if( !ret ) return _CKYFD_FAILURE;
