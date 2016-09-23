@@ -2,7 +2,7 @@ ckyfd
 ===
 
 - description
-  - c interface for kyfd
+  - c, python interface for kyfd
 
 - prerequisite
   - aclocal, automake, libtoolize, autoheader, autoconf
@@ -41,7 +41,7 @@ ckyfd
 $ git clone https://github.com/dsindex/ckyfd
 $ cd ckyfd
 $ ./buildconf
-$ ./configure --with-kyfd=/home/kyfd/install --enable-python=yes
+$ ./configure --with-kyfd=/home/kyfd/install --enable-python=yes --pythoninc=/usr/include/python2.7
 $ make ; make install
 ```
 
@@ -60,7 +60,6 @@ $ make ; make install
   Loaded configuration, initializing decoder...
   elapsed time = 0.472973 sec
   나 /np 는 /pt <space> 학 교 /nc 에 서 /pa <space> 공 부 /na 하 /xv _ㅂ 니 다 /ef . /sf
-  cnt_line = 0
   선 /nc 을 /po <space> 긋 /irrs /vb 어 /ex <space> 버 리 /vx 었 /ep 다 /ef . /sf
   고 맙 /irrb /vj 었 /ep 다 /ef . /sf
   나 /np 는 /pt <space> 답 /nc 을 /po <space> 모 르 /irrl /vb 아 /ec . /sf
@@ -86,3 +85,15 @@ $ make ; make install
 
   # sentence_id ||| result ||| score \t ... sentence_id ||| result ||| score \t ...
   ```
+
+- how to test in python
+```
+$ cd wrapper/python
+$ cat testme.txt | python test.py -c koreanuni.xml
+Loading fst korfinaluni.fst...
+나 /np 는 /pt <space> 학 교 /nc 에 서 /pa <space> 공 부 /na 하 /xv _ㅂ 니 다 /ef . /sf ||| 47.8457
+선 /nc 을 /po <space> 긋 /irrs /vb 어 /ex <space> 버 리 /vx 었 /ep 다 /ef . /sf ||| 48.1826
+고 맙 /irrb /vj 었 /ep 다 /ef . /sf ||| 21.123
+나 /np 는 /pt <space> 답 /nc 을 /po <space> 모 르 /irrl /vb 아 /ec . /sf ||| 41.7686
+...
+```
