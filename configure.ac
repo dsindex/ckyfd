@@ -134,6 +134,7 @@ AM_COND_IF( [PYTHON_USE], [
 AC_CONFIG_FILES([
 	wrapper/python/Makefile
 	wrapper/python/test.py
+	wrapper/python/test_rouzeta.py
 ])] ) 
 
 AC_OUTPUT

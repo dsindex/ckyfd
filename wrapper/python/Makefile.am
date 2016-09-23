@@ -20,6 +20,6 @@ libpkyfd_la_LDFLAGS = -avoid-version -fPIC -undefined dynamic_lookup
 libpkyfd_la_LIBADD  = -lckyfd -lkyfd -L${kyfd_lib} -L${ckyfd_lib}
 libpkyfd_la_CFLAGS  = -g -Wall -fno-strict-aliasing
 
-dist_bin_SCRIPTS = test.py
+dist_bin_SCRIPTS = test.py test_rouzeta.py rouzeta.py
 
 
