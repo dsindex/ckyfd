@@ -29,15 +29,61 @@ def to_mlist(encoded, decoded) :
 	'''
     encoded : 나 는 <space> 학 교 에 서 <space> 공 부 합 니 다 .
 	decoded : 나 /np 는 /pt <space> 학 교 /nc 에 서 /pa <space> 공 부 /na 하 /xv _ㅂ 니 다 /ef . /sf
+	return :
+	  elist : ['나는','학교에서','공부합니다.']
+	  mlist : [{'morph':'나는','tag':'/np','ltag':None, 'eidx':0, 'midx':0}, { .. }, ...]
 	'''
-	eoj_list = encoded.replace(WORD_BW, '\t').split('\t')
-	eoj_list = [eoj.replace(' ','') for eoj in eoj_list]
-	mseq_list = decoded.replace(WORD_BW, '\t').split('\t')
-	for mseq in mseq_list : # '나 /np 는 /pt'
-		mseq = mseq.strip()
+	elist = encoded.replace(WORD_BW, '\t').split('\t')
+	elist = [eoj.replace(' ','') for eoj in elist]
 
+	mlist = []
+	mseq_list = decoded.replace(WORD_BW, '\t').split('\t')
+	eidx = 0
+	midx = 0
+	for mseq in mseq_list : # '공 부 /na 하 /xv _ㅂ 니 다 /ef . /sf'
+		mseq = mseq.strip().split()
+		mseq_size = len(mseq)
+		bucket = []
+		idx = 0
+		while idx < mseq_size :
+			m = mseq[idx]
+			msize = len(m)
+			if msize >= 2 and m[0] == '/' : # tag
+				mtype = 'tag'
+			else :                          # syll
+				mtype = 'syll'
+			if mtype == 'tag' :
+				morph = ''.join(bucket)
+				# --------------------------------------------------
+				# check if next is also tag type, ex) '/irrs /vb'
+				t_range = 0
+				nidx = idx+1
+				while nidx < mseq_size :
+					n = mseq[nidx]
+					nsize = len(n)
+					if nsize >= 2 and n[0] == '/' : t_range += 1
+					else : break
+					nidx += 1
+				# --------------------------------------------------
+				if t_range >= 1 :
+					tag = mseq[idx + t_range]             # last tag
+					ltag = ''.join(mseq[idx:idx+t_range]) # additional tag
+				else :
+					tag = m
+					ltag = None
+				mlist.append({'morph':morph, 'tag':tag, 'ltag':ltag, 'eidx':eidx, 'midx':midx})
+				midx += 1
+
+				bucket = []
+				idx += t_range
+			else : # syll
+				bucket.append(m)
+			idx += 1	
+		eidx += 1
+
+	return mlist, elist
 	
-def tagging(kyfd, string) :
+def tagging(kyfd, string, verbose=False) :
 	'''
 	string  : 나는 학교에서 공부합니다.
 	'''
@@ -50,8 +96,11 @@ def tagging(kyfd, string) :
 	encoded = encode(string)
 	if not encoded : return outs
 
-	# analyzed : 0 ||| 나 /np 는 /pt <space> 학 교 /nc 에 서 /pa <space> 공 부 /na 하 /xv _ㅂ 니 다 /ef . /sf ||| 47.8457 \t ...
 	analyzed = kyfd.decode(encoded)
+
+	if verbose :
+		print encoded
+		print analyzed
 
 	results = analyzed.strip().split('\t')
 	nbest = len(results)
@@ -72,8 +121,8 @@ def tagging(kyfd, string) :
 		if size == 3 : # seq, decoded output, score
 			decoded = tokens[1]
 			score = tokens[2]
-		mlist = to_mlist(encoded, decoded)
-		outs.append([mlist, score])
+		mlist, elist = to_mlist(encoded, decoded)
+		outs.append([mlist, elist, score])
 
 	return outs
 
