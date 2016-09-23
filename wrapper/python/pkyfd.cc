@@ -34,7 +34,7 @@ static PyObject* pkyfd_Index_dealloc(pkyfd_IndexObject* self)
 // corresponds to __init__()
 static int pkyfd_Index_init(pkyfd_IndexObject* self, PyObject* args, PyObject* kwds)
 {
-	if(self != NULL) {
+	if( self != NULL ) {
 		self->config  = NULL;
 		self->decoder = NULL;
 	}
@@ -44,17 +44,15 @@ static int pkyfd_Index_init(pkyfd_IndexObject* self, PyObject* args, PyObject* k
 // methods
 static PyObject* init(pkyfd_IndexObject* self, PyObject* args)
 {
-	int argc;
-	char** argv;
 	char* config_path;
 
-	if ( !PyArg_ParseTuple(args, "s", &kyfd_path) ) {
+	if ( !PyArg_ParseTuple(args, "s", &config_path) ) {
 		m_error("error : parameter parsing");
 		return NULL; // it raises exception in python
 	}
 
-	if(self->config == NULL) {
-		self->decoder = create_decoder(argc, argv, &self->config);
+	if( self->config == NULL ) {
+		self->decoder = create_decoder(config_path, &self->config);
 	} else {
 		Py_RETURN_NONE;
 	}
@@ -67,13 +65,20 @@ static PyObject* init(pkyfd_IndexObject* self, PyObject* args)
 }
 
 // methods
-static PyObject* analyze( pkyfd_IndexObject *self, PyObject *args )
+static PyObject* decode( pkyfd_IndexObject *self, PyObject *args )
 {
-	int					ret;
-	char*				in=NULL;
-	PyObject* 			py_out;
+	int			ret;
+	char*		in=NULL;
+	char*		nbest=NULL;
+	char*		oformat=NULL;
+	int			i;
+	char*		out;
+	int			size;
+	int			malloc_size;
+	char*		realloc_ptr;
+	PyObject*	py_out;
 
-	if (!PyArg_ParseTuple(args, "s|iiii", &in)) {
+	if ( !PyArg_ParseTuple(args, "s|ss", &in, &nbest, oformat) ) {
 		m_error("parameter parsing error");
 		return NULL;
 	}		
@@ -82,20 +87,63 @@ static PyObject* analyze( pkyfd_IndexObject *self, PyObject *args )
 		m_error("object isn't initialized yet");
 		return NULL;
 	}
-	if( strlen(in) == 0 ) {
+	size = strlen(in);
+	if( size == 0 ) {
 		Py_INCREF(Py_None);
 		return Py_None;
 	}
 
-	// run_decoder()
-
+	malloc_size = size * OUTPUT_SIZE_EXP;
+	out = (char*)malloc(malloc_size);
+	ret = run_decoder(self->decoder, in, out, malloc_size, self->config, nbest, oformat);
+	switch( ret ) {
+		case _CKYFD_SUCCESS :
+			py_out = PyString_FromString(out);
+			free(out);
+			return py_out;
+			break;
+		case _CKYFD_FAILURE :
+			m_error("can't decode : %s", in);
+			free(out);
+			Py_INCREF(Py_None);
+			return Py_None;
+			break;
+		case _CKYFD_BUFOVER :
+			for( i=1; i<RETRY_MAX_COUNT; i++) {
+				malloc_size = size * OUTPUT_SIZE_EXP * (i*2);
+				realloc_ptr = (char*)realloc(out, malloc_size);
+				if( realloc_ptr == NULL ) {
+					m_error("can't realloc memory");
+					free(out);
+					Py_INCREF(Py_None);
+					return Py_None;
+				}
+				out = realloc_ptr;
+				ret = run_decoder(self->decoder, in, out, malloc_size, self->config, nbest, oformat);
+				if( ret == _CKYFD_SUCCESS ) {
+					py_out = PyString_FromString(out);
+					free(out);
+					return py_out;
+				}
+			}
+			if( ret != _CKYFD_SUCCESS ) {
+				m_error("can't decode : %s", in);
+				free(out);
+				Py_INCREF(Py_None);
+				return Py_None;
+			}
+			break;
+		default :
+			break;
+	}
+	m_error("can't decode : %s", in);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
 
 static PyMethodDef pkyfd_Index_methods[] = {
 	{"init",           (PyCFunction)init,            METH_VARARGS, "initialize handler"},
-	{"analyze",        (PyCFunction)analyze,         METH_VARARGS, "analyze input"},
+	{"decode",         (PyCFunction)decode,          METH_VARARGS, "decode input"},
 	{NULL, NULL}
 };
 

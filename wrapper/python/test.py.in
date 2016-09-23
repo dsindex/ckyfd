@@ -36,4 +36,7 @@ if __name__ == '__main__':
 		if not line:
 			break
 		line = line.strip()
-		print line
+		ret = kyfd.decode(line)
+		print ret
+		ret = kyfd.decode(line, nbest='2', oformat='score');
+		print ret
