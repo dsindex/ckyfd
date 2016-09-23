@@ -44,15 +44,17 @@ static int pkyfd_Index_init(pkyfd_IndexObject* self, PyObject* args, PyObject* k
 // methods
 static PyObject* init(pkyfd_IndexObject* self, PyObject* args)
 {
-	char* config_path;
+	char*	config_path;
+	char*	nbest=NULL;
+	char*	oformat=NULL;
 
-	if ( !PyArg_ParseTuple(args, "s", &config_path) ) {
+	if ( !PyArg_ParseTuple(args, "s|ss", &config_path, &nbest, &oformat) ) {
 		m_error("error : parameter parsing");
 		return NULL; // it raises exception in python
 	}
 
 	if( self->config == NULL ) {
-		self->decoder = create_decoder(config_path, &self->config);
+		self->decoder = create_decoder(config_path, &self->config, nbest, oformat);
 	} else {
 		Py_RETURN_NONE;
 	}
@@ -69,8 +71,6 @@ static PyObject* decode( pkyfd_IndexObject *self, PyObject *args )
 {
 	int			ret;
 	char*		in=NULL;
-	char*		nbest=NULL;
-	char*		oformat=NULL;
 	int			i;
 	char*		out;
 	int			size;
@@ -78,7 +78,7 @@ static PyObject* decode( pkyfd_IndexObject *self, PyObject *args )
 	char*		realloc_ptr;
 	PyObject*	py_out;
 
-	if ( !PyArg_ParseTuple(args, "s|ss", &in, &nbest, oformat) ) {
+	if ( !PyArg_ParseTuple(args, "s", &in) ) {
 		m_error("parameter parsing error");
 		return NULL;
 	}		
@@ -95,7 +95,7 @@ static PyObject* decode( pkyfd_IndexObject *self, PyObject *args )
 
 	malloc_size = size * OUTPUT_SIZE_EXP;
 	out = (char*)malloc(malloc_size);
-	ret = run_decoder(self->decoder, in, out, malloc_size, self->config, nbest, oformat);
+	ret = run_decoder(self->decoder, in, out, malloc_size);
 	switch( ret ) {
 		case _CKYFD_SUCCESS :
 			py_out = PyString_FromString(out);
@@ -119,7 +119,7 @@ static PyObject* decode( pkyfd_IndexObject *self, PyObject *args )
 					return Py_None;
 				}
 				out = realloc_ptr;
-				ret = run_decoder(self->decoder, in, out, malloc_size, self->config, nbest, oformat);
+				ret = run_decoder(self->decoder, in, out, malloc_size);
 				if( ret == _CKYFD_SUCCESS ) {
 					py_out = PyString_FromString(out);
 					free(out);

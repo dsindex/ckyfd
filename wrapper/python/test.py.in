@@ -25,8 +25,10 @@ if __name__ == '__main__':
 		parser.print_help()
 		sys.exit(1)
 
+	nbest='1'
+	oformat='text' # text, score
 	kyfd = pkyfd.Index()
-	kyfd.init(config_path)
+	kyfd.init(config_path, nbest, oformat)
 
 	while 1:
 		try:
@@ -36,5 +38,5 @@ if __name__ == '__main__':
 		if not line:
 			break
 		line = line.strip()
-		ret = kyfd.decode(line, nbest='2', oformat='score');
+		ret = kyfd.decode(line);
 		print ret
