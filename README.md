@@ -100,6 +100,7 @@ Loading fst korfinaluni.fst...
 
 - [Rouzeta](https://shleekr.github.io/) in python
 ```
+$ cd wrapper/python
 $ python test_rouzeta.py -c koreanuni.xml
 Loading fst korfinaluni.fst...
 나는 학교에서 공부합니다.
