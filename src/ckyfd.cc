@@ -15,9 +15,13 @@ struct membuf : std::streambuf
 	}
 };
 
-void* create_decoder(char* config_file, void** config)
+void* create_decoder(char* config_file, void** config, char* nbest, char* oformat)
 {
     DecoderConfig* conf = new DecoderConfig;
+	// set options
+	if( nbest != NULL and *nbest != '\0' )     conf->handleArgument("nbest", nbest);
+	if( oformat != NULL and *oformat != '\0' ) conf->handleArgument("output", oformat);
+	// parse config file
 	conf->parseConfigFile(config_file);
     Decoder* dec = new Decoder(*conf);
 	*config = conf;
@@ -52,14 +56,9 @@ static char *strlcat(char *dst, const char *src, int *limit)
 	return p;
 }
 
-int run_decoder(void* decoder, char* in, char* out, int out_size, void* config, char* nbest, char* oformat)
+int run_decoder(void* decoder, char* in, char* out, int out_size)
 {
 	Decoder* dec = static_cast<Decoder*>(decoder);
-	DecoderConfig* conf = static_cast<DecoderConfig*>(config);
-
-	// set options
-	if( nbest != NULL and *nbest != '\0' )     conf->handleArgument("nbest", nbest);
-	if( oformat != NULL and *oformat != '\0' ) conf->handleArgument("output", oformat);
 
 	// char* -> istream
 	membuf sbuf(in, in + strlen(in));

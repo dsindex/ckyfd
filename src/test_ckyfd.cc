@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	gettimeofday(&t1, NULL);
 
 	// load the configuration and initialize the decoder
-	decoder = create_decoder(argv[1], &config);
+	decoder = create_decoder(argv[1], &config, nbest, oformat);
     
 	fprintf(stderr, "Loaded configuration, initializing decoder...\n");
 
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 		if(string[0] == '\0')
 			continue;
 
-		ret = run_decoder(decoder, string, buf, buf_size, config, nbest, oformat);
+		ret = run_decoder(decoder, string, buf, buf_size);
 		switch( ret ) {
 			case _CKYFD_SUCCESS :
 				fprintf(stdout, "%s\n", buf);
