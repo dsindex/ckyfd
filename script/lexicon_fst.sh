@@ -21,8 +21,10 @@ function print_usage_and_exit()
 {
   set +x
   local STATUS=$1
-  echo "Usage: ${PROGNAME} [-v] [-v] [--dry-run] [-h] [--help]"
+  echo "Usage: ${PROGNAME} [-v] [-v] [--dry-run] [-h] [--help] <tut1> <train>"
   echo ""
+  echo "<tut1>               tutorial directory"
+  echo "<train>              train file"
   echo " Options -"
   echo "  -v                 enables verbose mode 1"
   echo "  -v -v              enables verbose mode 2"
@@ -60,7 +62,7 @@ fi
 
 # template area is ended.
 # -----------------------------------------------------------------------------
-if [ ${#} != 0 ]; then print_usage_and_exit 1; fi
+if [ ${#} != 2 ]; then print_usage_and_exit 1; fi
 
 # current dir of this script
 CDIR=$(readlink -f $(dirname $(readlink -f ${BASH_SOURCE[0]})))
@@ -106,20 +108,23 @@ if (( VERBOSE_MODE > 1 )); then
 	revert_calmness
 fi
 
+python='/usr/bin/python2.7'
+
 mkdir -p ${CDIR}/wdir
 WDIR=${CDIR}/wdir
-
-# download tut1
-cd ${CDIR}
-curl -OL http://www.phontron.com/kyfd/tut1/tut1.tar.gz
-tar -zxvf tut1.tar.gz
-TDIR=${CDIR}/tut1
-
-# make word vocab
-${TDIR}/script/wordvocab.pl < ${CDIR}/train_kr.txt > ${WDIR}/word.vocab
+TDIR=$1
+if [ ! -e ${TDIR} ]; then
+	echo "need tut1 directory path"
+	exit
+fi
+train=$2
 
 # make lexicon
-${TDIR}/script/makelexicon.pl < ${WDIR}/word.vocab > ${WDIR}/lexicon.txt
+function make_lexicon_ {
+	${TDIR}/script/wordvocab.pl < ${train} > ${WDIR}/word.vocab
+	${TDIR}/script/makelexicon.pl < ${WDIR}/word.vocab > ${WDIR}/lexicon.txt
+}
+${python} ${CDIR}/makelexicon.py < ${train} > ${WDIR}/lexicon.txt
 
 # make input symbol
 ${TDIR}/script/makesymbol.pl -input ${WDIR}/lexicon.txt > ${WDIR}/char.sym
@@ -147,7 +152,10 @@ fstprint --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/lexicon
 cp -rf ${TDIR}/config/tut1.xml ${WDIR}
 
 # prepare input data for decoding
-${TDIR}/script/separatechars.pl < ${CDIR}/train_kr.txt > ${WDIR}/input.txt
+function separatechars_ {
+	${TDIR}/script/separatechars.pl < ${train} > ${WDIR}/input.txt
+}
+${python} ${CDIR}/separatechars.py < ${train} > ${WDIR}/input.txt
 
 # decoding
 cd ${WDIR}
