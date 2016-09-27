@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void* create_decoder(char* config_file, void** config, char* nbest, char* oformat);
+void* create_decoder(char* config_file, void** config, char* nbest, char* oformat, char* unknown, char* terminal);
 
 void  destroy_decoder(void* decoder, void* config);
 

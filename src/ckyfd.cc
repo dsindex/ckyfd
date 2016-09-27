@@ -15,12 +15,14 @@ struct membuf : std::streambuf
 	}
 };
 
-void* create_decoder(char* config_file, void** config, char* nbest, char* oformat)
+void* create_decoder(char* config_file, void** config, char* nbest, char* oformat, char* unknown, char* terminal)
 {
     DecoderConfig* conf = new DecoderConfig;
 	// set options
-	if( nbest != NULL and *nbest != '\0' )     conf->handleArgument("nbest", nbest);
-	if( oformat != NULL and *oformat != '\0' ) conf->handleArgument("output", oformat);
+	if( nbest != NULL and *nbest != '\0' )       conf->handleArgument("nbest", nbest);
+	if( oformat != NULL and *oformat != '\0' )   conf->handleArgument("output", oformat);
+	if( unknown != NULL and *unknown != '\0' )   conf->handleArgument("unknown", unknown);
+	if( terminal != NULL and *terminal != '\0' ) conf->handleArgument("terminal", terminal);
 	// parse config file
 	conf->parseConfigFile(config_file);
     Decoder* dec = new Decoder(*conf);

@@ -47,14 +47,16 @@ static PyObject* init(pkyfd_IndexObject* self, PyObject* args)
 	char*	config_path;
 	char*	nbest=NULL;
 	char*	oformat=NULL;
+	char*	unknown=NULL;
+	char*	terminal=NULL;
 
-	if ( !PyArg_ParseTuple(args, "s|ss", &config_path, &nbest, &oformat) ) {
+	if ( !PyArg_ParseTuple(args, "s|ssss", &config_path, &nbest, &oformat, &unknown, &terminal) ) {
 		m_error("error : parameter parsing");
 		return NULL; // it raises exception in python
 	}
 
 	if( self->config == NULL ) {
-		self->decoder = create_decoder(config_path, &self->config, nbest, oformat);
+		self->decoder = create_decoder(config_path, &self->config, nbest, oformat, unknown, terminal);
 	} else {
 		Py_RETURN_NONE;
 	}

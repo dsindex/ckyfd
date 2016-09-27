@@ -20,6 +20,8 @@ int main(int argc, char** argv)
 	int ret;
 	char* nbest = "1";
 	char* oformat = "text"; // text | score | component
+	char* unknown = "<unk>"; // unknown symbol
+	char* terminal = "<w>";  // boundary symbol
 
 	if(argc == 1) {
 		fprintf(stderr, "Usage : %s config.xml\n", argv[0]);
@@ -34,7 +36,7 @@ int main(int argc, char** argv)
 	gettimeofday(&t1, NULL);
 
 	// load the configuration and initialize the decoder
-	decoder = create_decoder(argv[1], &config, nbest, oformat);
+	decoder = create_decoder(argv[1], &config, nbest, oformat, unknown, terminal);
     
 	fprintf(stderr, "Loaded configuration, initializing decoder...\n");
 
