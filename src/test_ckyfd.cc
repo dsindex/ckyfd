@@ -4,7 +4,7 @@
 #include <sys/time.h>
 #include "ckyfd.h"
 
-#define LINE_SIZE	10240
+#define LINE_SIZE	1024*100
 
 int main(int argc, char** argv)
 {
