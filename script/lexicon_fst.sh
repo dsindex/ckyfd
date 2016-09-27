@@ -150,7 +150,8 @@ cp -rf ${TDIR}/config/tut1.xml ${WDIR}
 ${TDIR}/script/separatechars.pl < ${CDIR}/train_kr.txt > ${WDIR}/input.txt
 
 # decoding
-${PDIR}/src/test_ckyfd ${WDIR}/tut1.xml < ${WDIR}/input.txt > ${WDIR}/output.txt
+cp -rf ${PDIR}/src/test_ckyfd ${WDIR}
+${WDIR}/test_ckyfd ${WDIR}/tut1.xml < ${WDIR}/input.txt > ${WDIR}/output.txt
 
 close_fd
 
