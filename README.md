@@ -127,3 +127,9 @@ _ㅂ니다	/ef	None	2	6
 아	/ec	None	2	5
 .	/sf	None	2	6
 ```
+
+- [kyfd tutorial](http://www.phontron.com/kyfd/tut1/)
+```
+$ cd script
+$ ./lexicon_fst.sh -v -v
+```
