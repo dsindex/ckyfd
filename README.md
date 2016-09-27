@@ -143,4 +143,8 @@ _ㅂ니다	/ef	None	2	6
 
 - building auto-spacing model
   - let's try to build an auto-spacer. this is somewhat different from the lexicon example.
+  ```
+  $ ./autospacer_fst.sh train.txt -v -v
+  (on going)
+  ```
 
