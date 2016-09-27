@@ -21,9 +21,8 @@ function print_usage_and_exit()
 {
   set +x
   local STATUS=$1
-  echo "Usage: ${PROGNAME} [-v] [-v] [--dry-run] [-h] [--help] <tut1> <train>"
+  echo "Usage: ${PROGNAME} [-v] [-v] [--dry-run] [-h] [--help] <train>"
   echo ""
-  echo "<tut1>               tutorial directory"
   echo "<train>              train file"
   echo " Options -"
   echo "  -v                 enables verbose mode 1"
@@ -62,7 +61,7 @@ fi
 
 # template area is ended.
 # -----------------------------------------------------------------------------
-if [ ${#} != 2 ]; then print_usage_and_exit 1; fi
+if [ ${#} != 1 ]; then print_usage_and_exit 1; fi
 
 # current dir of this script
 CDIR=$(readlink -f $(dirname $(readlink -f ${BASH_SOURCE[0]})))
@@ -112,25 +111,16 @@ python='/usr/bin/python2.7'
 
 mkdir -p ${CDIR}/wdir
 WDIR=${CDIR}/wdir
-TDIR=$1
-if [ ! -e ${TDIR} ]; then
-	echo "need tut1 directory path"
-	exit
-fi
-train=$2
+train=$1
 
 # make lexicon
-function make_lexicon_ {
-	${TDIR}/script/wordvocab.pl < ${train} > ${WDIR}/word.vocab
-	${TDIR}/script/makelexicon.pl < ${WDIR}/word.vocab > ${WDIR}/lexicon.txt
-}
 ${python} ${CDIR}/makelexicon.py < ${train} > ${WDIR}/lexicon.txt
 
 # make input symbol
-${TDIR}/script/makesymbol.pl -input ${WDIR}/lexicon.txt > ${WDIR}/char.sym
+${python} ${CDIR}/makesymbol.py --input < ${WDIR}/lexicon.txt > ${WDIR}/char.sym
 
 # make output symbol
-${TDIR}/script/makesymbol.pl -output ${WDIR}/lexicon.txt > ${WDIR}/word.sym
+${python} ${CDIR}/makesymbol.py --output < ${WDIR}/lexicon.txt > ${WDIR}/word.sym
 
 # compile and optimize fst
 fstcompile --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/lexicon.txt ${WDIR}/lexicon.cmp
@@ -149,17 +139,14 @@ fstrelabel --relabel_ipairs=${WDIR}/map.txt ${WDIR}/lexicon.srt ${WDIR}/lexicon.
 fstprint --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/lexicon.fst > ${WDIR}/lexicon.fst.txt
 
 # prepare config xml file
-cp -rf ${TDIR}/config/tut1.xml ${WDIR}
+cp -rf ${CDIR}/config.xml ${WDIR}
 
 # prepare input data for decoding
-function separatechars_ {
-	${TDIR}/script/separatechars.pl < ${train} > ${WDIR}/input.txt
-}
 ${python} ${CDIR}/separatechars.py < ${train} > ${WDIR}/input.txt
 
 # decoding
 cd ${WDIR}
-${PDIR}/src/test_ckyfd tut1.xml < input.txt > output.txt
+${PDIR}/src/test_ckyfd config.xml < input.txt > output.txt
 
 close_fd
 

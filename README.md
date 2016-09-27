@@ -128,20 +128,16 @@ _ㅂ니다	/ef	None	2	6
 .	/sf	None	2	6
 ```
 
-- [kyfd tutorial](http://www.phontron.com/kyfd/tut1/)
-  - download tutorial
-  ```
-  $ cd script
-  $ curl -OL http://www.phontron.com/kyfd/tut1/tut1.tar.gz
-  $ tar -zxvf tut1.tar.gz
-  ```
+- tutorial
+  - [kyfd tutorial](http://www.phontron.com/kyfd/tut1/)
   - build lexicon fst and test decoding
   ```
   $ cd script
-  $ ./lexicon_fst.sh tut1 train.txt -v -v
+  $ ./lexicon_fst.sh train.txt -v -v
   # 숨은 가계부채로 불리는 자영업자(개인사업자) 대출이 은행권에서만 1년 새 24조원 넘게 증가했다.
   # -> encoding
   # 숨 은 가 계 부 채 로 불 리 는 자 영 업 자 ( 개 인 사 업 자 ) 대 출 이 은 행 권 에 서 만 1 년 새 2 4 조 원 넘 게 증 가 했 다 .
   # -> decoding
   # 숨은 가계부채로 불리는 자영업자(개인사업자) 대출이 은행권에서만 1년새 24조원 넘게 증가했다.
+  # you can implement an auto-spacer by using this process.
   ```

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<kyfd>
+    <!-- A file containing the input symbols -->
+    <arg name="isymbols" value="char.sym" />
+
+    <!-- A file containing the output symbols (in OpenFst format) -->
+    <arg name="osymbols" value="word.sym" />
+
+    <!-- The model that is to be used in decoding -->
+    <fst file="lexicon.fst" />
+
+</kyfd>
