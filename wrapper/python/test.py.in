@@ -28,9 +28,8 @@ if __name__ == '__main__':
 	nbest='1'
 	oformat='score' # text, score
 	unknown='<unk>' # unknown symbol
-	terminal='<w>'  # boundary symbol
 	kyfd = pkyfd.Index()
-	kyfd.init(config_path, nbest, oformat, unknown, terminal)
+	kyfd.init(config_path, nbest, oformat, unknown)
 
 	while 1:
 		try:
