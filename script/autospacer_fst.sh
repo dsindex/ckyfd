@@ -117,20 +117,20 @@ train=$1
 ${python} ${CDIR}/makeautospacer.py < ${train} > ${WDIR}/autospacer.txt
 
 # make input symbol
-${python} ${CDIR}/makesymbol.py --input < ${WDIR}/autospacer.txt > ${WDIR}/char.sym
+${python} ${CDIR}/makesymbol.py --input < ${WDIR}/autospacer.txt > ${WDIR}/input.sym
 
 # make output symbol
-${python} ${CDIR}/makesymbol.py --output < ${WDIR}/autospacer.txt > ${WDIR}/word.sym
+${python} ${CDIR}/makesymbol.py --output < ${WDIR}/autospacer.txt > ${WDIR}/output.sym
 
 # compile and optimize fst
-fstcompile --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/autospacer.txt ${WDIR}/autospacer.cmp
+fstcompile --isymbols=${WDIR}/input.sym --osymbols=${WDIR}/output.sym ${WDIR}/autospacer.txt ${WDIR}/autospacer.cmp
 fstdeterminize ${WDIR}/autospacer.cmp ${WDIR}/autospacer.det
 fstminimize    ${WDIR}/autospacer.det ${WDIR}/autospacer.min
 fstarcsort     ${WDIR}/autospacer.min ${WDIR}/autospacer.srt
 
 # print out fst
 cp -rf ${WDIR}/autospacer.srt ${WDIR}/autospacer.fst
-fstprint --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/autospacer.fst > ${WDIR}/autospacer.fst.txt
+fstprint --isymbols=${WDIR}/input.sym --osymbols=${WDIR}/output.sym ${WDIR}/autospacer.fst > ${WDIR}/autospacer.fst.txt
 
 # prepare config xml file
 cp -rf ${CDIR}/config_autospacer.xml ${WDIR}
@@ -140,7 +140,7 @@ ${python} ${CDIR}/separatechars.py < ${train} > ${WDIR}/input.txt
 
 # decoding
 cd ${WDIR}
-${PDIR}/src/test_ckyfd config_autospacer.xml < input.txt > output.txt
+${PDIR}/src/test_ckyfd config_autospacer.xml < input.txt | ${python} ${CDIR}/recover.py > output.txt
 
 close_fd
 
