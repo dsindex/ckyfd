@@ -140,7 +140,9 @@ ${python} ${CDIR}/separatechars.py < ${train} > ${WDIR}/input.txt
 
 # decoding
 cd ${WDIR}
-${PDIR}/src/test_ckyfd config_autospacer.xml < input.txt | ${python} ${CDIR}/recover.py > output.txt
+${PDIR}/src/test_ckyfd config_autospacer.xml < input.txt > output.tmp
+${python} ${CDIR}/recover.py < output.tmp > output.txt
+cd ${CDIR}
 
 close_fd
 

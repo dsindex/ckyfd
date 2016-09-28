@@ -145,5 +145,7 @@ _ㅂ니다	/ef	None	2	6
   - let's try to build an auto-spacer. this is somewhat different from the lexicon example.
   ```
   $ ./autospacer_fst.sh train.txt -v -v
+  # 
+
   ```
 
