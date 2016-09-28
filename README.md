@@ -143,7 +143,7 @@ _ㅂ니다	/ef	None	2	6
   ```
 
 - building auto-spacing model
-  - let's try to build an auto-spacer. this is somewhat different from the lexicon example. first, i use a character-based model. so, the size of output symbols should be smaller. second, transition probabilities are calcuated by `p(a,b)/p(a)` for `n m b b prob` where `n` stands for `a`
+  - let's try to build an auto-spacer. this is somewhat different from the lexicon example. first, i use a character-based model. so, the size of output symbols should be small. second, transition probabilities are calcuated by `p(a,b)/p(a)` for `n m b b prob` where `n` stands for `a`
   ```
   예) <b> 다 음 검 색 <w>
   0 1 다 다       p(<b>, 다) / p(<b>)
