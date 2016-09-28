@@ -131,6 +131,7 @@ _ㅂ니다	/ef	None	2	6
 - tutorial
   - [kyfd tutorial](http://www.phontron.com/kyfd/tut1/)
   - building lexicon fst and test decoding
+  - run
   ```
   $ cd script
   $ ./lexicon_fst.sh train.txt -v -v
@@ -142,7 +143,17 @@ _ㅂ니다	/ef	None	2	6
   ```
 
 - building auto-spacing model
-  - let's try to build an auto-spacer. this is somewhat different from the lexicon example.
+  - let's try to build an auto-spacer. this is somewhat different from the lexicon example. first, i use a character-based model. so, the size of output symbols should be smaller. second, transition probabilities are calcuated by `p(a,b)/p(a)` for `n m b b prob` where `n` stands for `a`
+  ```
+  예) <b> 다 음 검 색 <w>
+  0 1 다 다       p(<b>, 다) / p(<b>)
+  1 2 음 음       p(다, 음)  / p(다)
+  2 3 검 검       p(음, 검)  / p(음)
+  3 4 색 색       p(검, 색)  / p(검)
+  4 5 <eps> <w>   p(색, <w>) / p(색)
+  5 0 <eps> <eps>
+  ```
+  - run
   ```
   $ ./autospacer_fst.sh train.txt -v -v
   # © News1 <쥐띠> 과로와 과음을 하게 되면 후유증이 심하게 가는 날.
