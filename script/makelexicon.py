@@ -31,7 +31,8 @@ if __name__ == '__main__':
 			break
 		line = line.strip()
 		for word in line.split() :
-			key = word.replace(' ','').lower()
+			# make lower
+			key = word.lower()
 			if key in word_vocab :
 				word_vocab[key] += 1
 			else :

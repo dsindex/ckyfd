@@ -129,24 +129,18 @@ fstminimize    ${WDIR}/autospacer.det ${WDIR}/autospacer.min
 fstarcsort     ${WDIR}/autospacer.min ${WDIR}/autospacer.srt
 
 # print out fst
-fstprint --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/autospacer.srt > ${WDIR}/autospacer.srt.txt
-
-# relabel <w> to <eps>
-# <eps> 0
-# <w> 3
-echo "3 0" > ${WDIR}/map.txt
-fstrelabel --relabel_ipairs=${WDIR}/map.txt ${WDIR}/autospacer.srt ${WDIR}/autospacer.fst
+cp -rf ${WDIR}/autospacer.srt ${WDIR}/autospacer.fst
 fstprint --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/autospacer.fst > ${WDIR}/autospacer.fst.txt
 
 # prepare config xml file
-cp -rf ${CDIR}/config.xml ${WDIR}
+cp -rf ${CDIR}/config_autospacer.xml ${WDIR}
 
 # prepare input data for decoding
 ${python} ${CDIR}/separatechars.py < ${train} > ${WDIR}/input.txt
 
 # decoding
 cd ${WDIR}
-${PDIR}/src/test_ckyfd config.xml < input.txt > output.txt
+${PDIR}/src/test_ckyfd config_autospacer.xml < input.txt > output.txt
 
 close_fd
 

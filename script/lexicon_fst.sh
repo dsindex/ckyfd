@@ -139,14 +139,14 @@ fstrelabel --relabel_ipairs=${WDIR}/map.txt ${WDIR}/lexicon.srt ${WDIR}/lexicon.
 fstprint --isymbols=${WDIR}/char.sym --osymbols=${WDIR}/word.sym ${WDIR}/lexicon.fst > ${WDIR}/lexicon.fst.txt
 
 # prepare config xml file
-cp -rf ${CDIR}/config.xml ${WDIR}
+cp -rf ${CDIR}/config_lexicon.xml ${WDIR}
 
 # prepare input data for decoding
 ${python} ${CDIR}/separatechars.py < ${train} > ${WDIR}/input.txt
 
 # decoding
 cd ${WDIR}
-${PDIR}/src/test_ckyfd config.xml < input.txt > output.txt
+${PDIR}/src/test_ckyfd config_lexicon.xml < input.txt > output.txt
 
 close_fd
 
