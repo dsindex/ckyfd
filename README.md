@@ -145,7 +145,12 @@ _ㅂ니다	/ef	None	2	6
   - let's try to build an auto-spacer. this is somewhat different from the lexicon example.
   ```
   $ ./autospacer_fst.sh train.txt -v -v
-  # 
-
+  # © News1 <쥐띠> 과로와 과음을 하게 되면 후유증이 심하게 가는 날.
+  # -> encoding
+  # © n e w s 1 < 쥐 띠 > 과 로 와 과 음 을 하 게 되 면 후 유 증 이 심 하 게 가 는 날 .
+  # -> decoding
+  # © <w> n e w s 1 <w> < 쥐 띠 > <w> 과 로 와 <w> 과 <w> 음 을 <w> 하 게 <w> 되 면 <w> 후 유 증 이 <w> 심 하 게 <w> 가 는 <w> 날 .
+  # -> recovering
+  # © news1 <쥐띠> 과로와 과 음을 하게 되면 후유증이 심하게 가는 날.
   ```
 
