@@ -89,7 +89,7 @@ def to_mlist(encoded, decoded) :
 	decoded : '나 /np 는 /pt <space> 학 교 /nc 에 서 /pa <space> 공 부 /na 하 /xv _ㅂ 니 다 /ef . /sf'
 	return  :
 	  - elist : ['나는','학교에서','공부합니다.']
-	  - mlist : [{'morph':'나','tag':'/np','ltag':None, 'stag':'NP', 'eidx':0, 'midx':0, ...}, { .. }, ...]
+	  - mlist : [{'morph':'나','tag':'np','ltag':None, 'stag':'NP', 'eidx':0, 'midx':0, ...}, { .. }, ...]
 	'''
 	elist = encoded.replace(WORD_BW, '\t').split('\t')
 	elist = [eoj.replace(' ','') for eoj in elist]
@@ -129,6 +129,8 @@ def to_mlist(encoded, decoded) :
 				else :
 					tag = m
 					ltag = None
+				tag = tag[1:]
+				if ltag : ltag = ltag[1:]
 				stag = tag
 				if tag in ROUZETA_SEJONG_TAG_MAP : stag = ROUZETA_SEJONG_TAG_MAP[tag]
 				mlist.append({'morph':morph, 'tag':tag, 'ltag':ltag, 'stag':stag, 'eidx':eidx, 'midx':midx})
@@ -148,7 +150,7 @@ def tagging(kyfd, string, verbose=False) :
 	string  : '나는 학교에서 공부합니다.'
 	return  : list of [mlist, elist, score] 
 	  - elist : ['나는','학교에서','공부합니다.']
-	  - mlist : [{'morph':'나','tag':'/np','ltag':None, 'stag':'NP', 'eidx':0, 'midx':0, ...}, { .. }, ...]
+	  - mlist : [{'morph':'나','tag':'np','ltag':None, 'stag':'NP', 'eidx':0, 'midx':0, ...}, { .. }, ...]
 	  - score : sum of weights through FST path, -1 if undefined
 	'''
 	outs = []

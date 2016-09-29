@@ -107,25 +107,25 @@ Loading fst korfinaluni.fst...
 0	나는
 1	학교에서
 2	공부합니다.
-나	/np	None	0	0
-는	/pt	None	0	1
-학교	/nc	None	1	2
-에서	/pa	None	1	3
-공부	/na	None	2	4
-하	/xv	None	2	5
-_ㅂ니다	/ef	None	2	6
-.	/sf	None	2	7
+나	np	None	NP	0	0
+는	pt	None	JX	0	1
+학교	nc	None	NNG	1	2
+에서	pa	None	JKB	1	3
+공부	na	None	NNG	2	4
+하	xv	None	XSV	2	5
+_ㅂ니다	ef	None	EF	2	6
+.	sf	None	SF	2	7
 나는 답을 몰라.
 0	나는
 1	답을
 2	몰라.
-나	/np	None	0	0
-는	/pt	None	0	1
-답	/nc	None	1	2
-을	/po	None	1	3
-모르	/vb	/irrl	2	4
-아	/ec	None	2	5
-.	/sf	None	2	6
+나	np	None	NP	0	0
+는	pt	None	JX	0	1
+답	nc	None	NNG	1	2
+을	po	None	JKO	1	3
+모르	vb	irrl	VV	2	4
+아	ec	None	EC	2	5
+.	sf	None	SF	2	6
 ```
 
 - tutorial
