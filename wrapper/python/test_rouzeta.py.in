@@ -50,7 +50,8 @@ if __name__ == '__main__':
 				morph = m['morph']
 				tag = m['tag']
 				ltag = m['ltag']
+				stag = m['stag']
 				eidx = m['eidx']
 				midx = m['midx']
-				tp = [morph, tag, ltag, eidx, midx]
+				tp = [morph, tag, ltag, stag, eidx, midx]
 				print '\t'.join([str(e) for e in tp])
