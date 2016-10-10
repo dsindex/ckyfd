@@ -10,8 +10,8 @@ import math
 
 # global variable
 VERBOSE = 0
-EPS = '<eps>'
-WB  = '<w>'
+EPS = '<eps>'  # epsilon
+WB  = '<w>'    # word boundary
 
 if __name__ == '__main__':
 

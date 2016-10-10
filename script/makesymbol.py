@@ -9,10 +9,10 @@ from optparse import OptionParser
 
 # global variable
 VERBOSE = 0
-EPS = '<eps>'
-SB  = '<s>'
-UNK = '<unk>'
-WB  = '<w>'
+EPS = '<eps>'  # epsilon
+SB  = '<s>'    # sentence boundary
+UNK = '<unk>'  # unknown
+WB  = '<w>'    # word boundary
 
 if __name__ == '__main__':
 

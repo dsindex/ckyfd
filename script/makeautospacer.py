@@ -10,9 +10,9 @@ import math
 
 # global variable
 VERBOSE = 0
-BT  = u'<b>'
-EPS = u'<eps>'
-WB  = u'<w>'
+BS  = u'<b>'   # begin sentence
+EPS = u'<eps>' # epsilon
+WB  = u'<w>'   # word boundary
 
 if __name__ == '__main__':
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 	pairs = {}
 	total_pair_count = 0
 	for key, freq in word_vocab.iteritems() :
-		key_list = [BT] + list(key) + [WB]
+		key_list = [BS] + list(key) + [WB]
 		size = len(key_list)
 		idx = 0
 		while idx < size :
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 	start_state = 0
 	state = 1
 	for key, freq in word_vocab.iteritems() :
-		key_list = [BT] + list(key) + [WB]
+		key_list = [BS] + list(key) + [WB]
 		size = len(key_list)
 		idx = 0
 		while idx < size :
