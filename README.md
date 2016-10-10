@@ -98,6 +98,41 @@ Loading fst korfinaluni.fst...
 ...
 ```
 
+- tutorial
+  - [kyfd tutorial](http://www.phontron.com/kyfd/tut1/)
+  - building lexicon fst and test decoding
+  ```
+  $ cd script
+  $ ./lexicon_fst.sh train.txt -v -v
+  # 숨은 가계부채로 불리는 자영업자(개인사업자) 대출이 은행권에서만 1년 새 24조원 넘게 증가했다.
+  # -> encoding
+  # 숨 은 가 계 부 채 로 불 리 는 자 영 업 자 ( 개 인 사 업 자 ) 대 출 이 은 행 권 에 서 만 1 년 새 2 4 조 원 넘 게 증 가 했 다 .
+  # -> decoding
+  # 숨은 가계부채로 불리는 자영업자(개인사업자) 대출이 은행권에서만 1년새 24조원 넘게 증가했다.
+  ```
+  - building auto-spacing model
+    - let's try to build an auto-spacer. this is somewhat different from the lexicon example. first, i use a character-based model. so, the size of output symbols should be small. second, transition probabilities are calcuated by `p(a,b)/p(a)` for `n m b b prob` where `n` stands for `a`
+    ```
+    예) <b> 다 음 검 색 <w>
+    0 1 다 다       p(<b>, 다) / p(<b>)
+    1 2 음 음       p(다, 음)  / p(다)
+    2 3 검 검       p(음, 검)  / p(음)
+    3 4 색 색       p(검, 색)  / p(검)
+    4 5 <eps> <w>   p(색, <w>) / p(색)
+    5 0 <eps> <eps>
+    ```
+    - run
+    ```
+    $ ./autospacer_fst.sh train.txt -v -v
+    # © News1 <쥐띠> 과로와 과음을 하게 되면 후유증이 심하게 가는 날.
+    # -> encoding
+    # © n e w s 1 < 쥐 띠 > 과 로 와 과 음 을 하 게 되 면 후 유 증 이 심 하 게 가 는 날 .
+    # -> decoding
+    # © <w> n e w s 1 <w> < 쥐 띠 > <w> 과 로 와 <w> 과 <w> 음 을 <w> 하 게 <w> 되 면 <w> 후 유 증 이 <w> 심 하 게 <w> 가 는 <w> 날 .
+    # -> recovering
+    # © news1 <쥐띠> 과로와 과 음을 하게 되면 후유증이 심하게 가는 날.
+    ```
+
 - [Rouzeta](https://shleekr.github.io/) in python
 ```
 $ cd wrapper/python
@@ -154,41 +189,3 @@ _ㄹ	ed	None	ETM	2	5
 다	ef	None	EF	7	14
 .	sf	None	SF	7	15
 ```
-
-- tutorial
-  - [kyfd tutorial](http://www.phontron.com/kyfd/tut1/)
-  - building lexicon fst and test decoding
-  - run
-  ```
-  $ cd script
-  $ ./lexicon_fst.sh train.txt -v -v
-  # 숨은 가계부채로 불리는 자영업자(개인사업자) 대출이 은행권에서만 1년 새 24조원 넘게 증가했다.
-  # -> encoding
-  # 숨 은 가 계 부 채 로 불 리 는 자 영 업 자 ( 개 인 사 업 자 ) 대 출 이 은 행 권 에 서 만 1 년 새 2 4 조 원 넘 게 증 가 했 다 .
-  # -> decoding
-  # 숨은 가계부채로 불리는 자영업자(개인사업자) 대출이 은행권에서만 1년새 24조원 넘게 증가했다.
-  ```
-
-- building auto-spacing model
-  - let's try to build an auto-spacer. this is somewhat different from the lexicon example. first, i use a character-based model. so, the size of output symbols should be small. second, transition probabilities are calcuated by `p(a,b)/p(a)` for `n m b b prob` where `n` stands for `a`
-  ```
-  예) <b> 다 음 검 색 <w>
-  0 1 다 다       p(<b>, 다) / p(<b>)
-  1 2 음 음       p(다, 음)  / p(다)
-  2 3 검 검       p(음, 검)  / p(음)
-  3 4 색 색       p(검, 색)  / p(검)
-  4 5 <eps> <w>   p(색, <w>) / p(색)
-  5 0 <eps> <eps>
-  ```
-  - run
-  ```
-  $ ./autospacer_fst.sh train.txt -v -v
-  # © News1 <쥐띠> 과로와 과음을 하게 되면 후유증이 심하게 가는 날.
-  # -> encoding
-  # © n e w s 1 < 쥐 띠 > 과 로 와 과 음 을 하 게 되 면 후 유 증 이 심 하 게 가 는 날 .
-  # -> decoding
-  # © <w> n e w s 1 <w> < 쥐 띠 > <w> 과 로 와 <w> 과 <w> 음 을 <w> 하 게 <w> 되 면 <w> 후 유 증 이 <w> 심 하 게 <w> 가 는 <w> 날 .
-  # -> recovering
-  # © news1 <쥐띠> 과로와 과 음을 하게 되면 후유증이 심하게 가는 날.
-  ```
-
