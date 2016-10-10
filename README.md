@@ -126,6 +126,32 @@ _ㅂ니다	ef	None	EF	2	6
 모르	vb	irrl	VV	2	4
 아	ec	None	EC	2	5
 .	sf	None	SF	2	6
+$ python test_rouzeta.py -c koreanbi.xml
+한국과 이란이 피할 수 없는 맞대결을 앞두고 있다.
+0	한국과
+1	이란이
+2	피할
+3	수
+4	없는
+5	맞대결을
+6	앞두고
+7	있다.
+한국	nr	None	NNP	0	0
+과	pc	None	JC	0	1
+이란	nr	None	NNP	1	2
+이	ps	None	JKS	1	3
+피하	vb	None	VV	2	4
+_ㄹ	ed	None	ETM	2	5
+수	nd	None	NNB	3	6
+없	vb	None	VV	4	7
+는	ed	None	ETM	4	8
+맞대결	nc	None	NNG	5	9
+을	po	None	JKO	5	10
+앞두	vb	None	VV	6	11
+고	ex	None	EC	6	12
+있	vx	None	VX	7	13
+다	ef	None	EF	7	14
+.	sf	None	SF	7	15
 ```
 
 - tutorial
