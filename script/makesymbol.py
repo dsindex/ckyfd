@@ -10,7 +10,7 @@ from optparse import OptionParser
 # global variable
 VERBOSE = 0
 EPS = '<eps>'
-SP  = '<s>'
+SB  = '<s>'
 UNK = '<unk>'
 WB  = '<w>'
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
 	symbols = {}
 	symbols[EPS] = 0
-	symbols[SP] = 1
+	symbols[SB] = 1
 	symbols[UNK] = 2
 	symbols[WB] = 3
 	idx = 4
