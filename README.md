@@ -127,6 +127,7 @@ _ㅂ니다	ef	None	EF	2	6
 아	ec	None	EC	2	5
 .	sf	None	SF	2	6
 $ python test_rouzeta.py -c koreanbi.xml
+Loading fst korinvertwordbifinal.fst...
 한국과 이란이 피할 수 없는 맞대결을 앞두고 있다.
 0	한국과
 1	이란이
