@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 	struct timeval t1,t2;
 	int ret;
 	char* nbest = "1";
-	char* oformat = "text"; // text | score | component
+	char* oformat = "text";  // text | score | component
 	char* unknown = "<unk>"; // unknown symbol
 
 	if(argc == 1) {
