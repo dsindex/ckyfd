@@ -41,7 +41,7 @@ ckyfd
 $ git clone https://github.com/dsindex/ckyfd
 $ cd ckyfd
 $ ./buildconf
-$ ./configure --with-kyfd=/home/kyfd/install --enable-python=yes --pythoninc=/usr/include/python2.7
+$ ./configure --with-kyfd=/home/kyfd/install --enable-python=yes --with-pythoninc=/usr/include/python2.7
 $ make ; make install
 ```
 
