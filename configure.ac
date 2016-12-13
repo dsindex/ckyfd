@@ -41,7 +41,7 @@ AC_ARG_WITH(kyfd,
 	[kyfd="$withval"],
 	[path=/home/kyfd/install
      if test -f ${path}/include/decoder.h ; then
-        dac_path=${path}
+        kyfd_path=${path}
      else
 	    AC_MSG_ERROR(Cannot locate kyfd include header. You should either use --with-kyfd option or install kyfd in ${path})
      fi
