@@ -5,6 +5,7 @@
 set -x
 trap 'rm -f aclocal.m4 ; exit 0' 1 2 3 13 15
 
+mkdir -p build
 aclocal -I build
 
 libtoolize --automake --force --copy
